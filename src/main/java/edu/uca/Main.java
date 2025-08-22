@@ -51,7 +51,40 @@ public class Main implements Runnable {
         System.out.print("Ingrese el precio del producto: ");
         double price = Double.parseDouble(scanner.nextLine());
 
-        Producto producto = new Ropa(id, name, price);
+        Sizes size = null;
+        while (size == null) {
+            System.out.print("Ingrese el tamaño del producto (S, M, L, XL, XXL, XXXL): ");
+            String input = scanner.nextLine().toUpperCase();
+
+            try {
+                size = Sizes.valueOf(input);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Tamaño inválido. Por favor ingrese uno de los valores válidos.");
+            }
+        }
+
+
+        Materiales material = null;
+        while (material == null) {
+            System.out.print("Ingrese el material del producto (ALGODON, POLYESTER, NYLON, TELA): ");
+            String input = scanner.nextLine().toUpperCase();
+
+            try {
+                material = Materiales.valueOf(input);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Material inválido. Por favor ingrese uno de los valores válidos.");
+            }
+        }
+
+        Producto producto = new Ropa(id, name, price, size, material);
+        this.descuentoAlgodon((Ropa)producto);
         tienda.agregarProducto(producto);
+    }
+
+    private void descuentoAlgodon(Ropa producto) {
+        if((producto.getMaterial()).equals(Materiales.ALGODON)) {
+            producto.setPrecio(producto.getPrecio()*0.8);
+            System.out.println("Felicidades! Obtuviste un 20% de descuento.");
+        }
     }
 }
